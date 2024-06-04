@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>SDG Trivia Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #3a0035;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1, h2 {
+            margin-top: 0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+            border: none;
+            background-color: #00e1ff;
+            color: rgb(255, 255, 255);
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #007a70;
+        }
+        .option {
+            display: inline-block;
+            margin: 10px;
+        }
+        .option-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid #e100ff;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+        .option-img:hover {
+            border-color: #00eeff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SDG Trivia Quiz</h1>
+        <h2 id="question">Question goes here...</h2>
+        <div id="options"></div>
+        <button onclick="checkAnswer()">Submit Answer</button>
+        <p id="result"></p>
+        <p id="score"></p>
+        <button id="restartBtn" style="display: none;" onclick="restartQuiz()">Restart Quiz</button>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Which SDG aims to end poverty in all its forms everywhere?",
+                options: [
+                    { text: "SDG 1", img: "goal_01.png" },
+                    { text: "SDG 2", img: "sdg-icon-02-zero-hunger.png" },
+                    { text: "SDG 3", img: "Financing SDG 3_cover illus.png" },
+                    { text: "SDG 4", img: "4.png" }
+                ],
+                answer: "SDG 1"
+            },
+            {
+                question: "Which SDG focuses on ensuring access to clean water and sanitation for all?",
+                options: [
+                    { text: "SDG 5", img: "5.png" },
+                    { text: "SDG 6", img: "who-cards-08-sdg06.webp" },
+                    { text: "SDG 7", img: "who-cards-08-sdg07.webp" },
+                    { text: "SDG 8", img: "8th.jpg" }
+                ],
+                answer: "SDG 6"
+            },
+            {
+                question: "Which SDG aims to promote sustained, inclusive, and sustainable economic growth, full and productive employment, and decent work for all?",
+                options: [
+                    { text: "SDG 8", img: "8th.jpg" },
+                    { text: "SDG 9", img: "SDG 9 icon.png" },
+                    { text: "SDG 10", img: "goal_10.png" },
+                    { text: "SDG 11", img: "11.jpg" }
+                ],
+                answer: "SDG 8"
+            },
+           
+            {
+                question: "Which SDG promotes responsible consumption and production?",
+                options: [
+                    { text: "SDG 9", img: "SDG 9 icon.png" },
+                    { text: "SDG 10", img: "goal_10.png" },
+                    { text: "SDG 11", img: "11.jpg" },
+                    { text: "SDG 12", img: "12th.jpg" }
+                ],
+                answer: "SDG 12"
+            },
+            {
+                question: "Which SDG aims to reduce inequality within and among countries?",
+                options: [
+                    { text: "SDG 6", img: "who-cards-08-sdg06.webp" },
+                    { text: "SDG 7", img: "who-cards-08-sdg07.webp" },
+                    { text: "SDG 10", img: "goal_10.png" },
+                    { text: "SDG 11", img: "11.jpg" }
+                ],
+                answer: "SDG 10"
+            },
+            {
+                question: "Which SDG focuses on ensuring healthy lives and promoting well-being for all at all ages?",
+                options: [
+                    { text: "SDG 2", img: "sdg-icon-02-zero-hunger.png" },
+                    { text: "SDG 3", img: "Financing SDG 3_cover illus.png" },
+                    { text: "SDG 4", img: "4.png" },
+                    { text: "SDG 5", img: "5.png" }
+                ],
+                answer: "SDG 3"
+            },
+            {
+                question: "Which SDG aims to achieve gender equality and empower all women and girls?",
+                options: [
+                    { text: "SDG 1", img: "goal_01.png" },
+                    { text: "SDG 5", img: "5.png" },
+                    { text: "SDG 9", img: "SDG 9 icon.png" },
+                    { text: "SDG 13", img:"13.jpg" }
+                ],
+                answer: "SDG 5"
+            },
+            {
+                question: "Which SDG focuses on ensuring inclusive and equitable quality education and promoting lifelong learning opportunities for all?",
+                options: [
+                    { text: "SDG 4", img: "4.png" },
+                    { text: "SDG 5", img: "5.png" },
+                    { text: "SDG 6", img: "who-cards-08-sdg06.webp" },
+                    { text: "SDG 7", img: "who-cards-08-sdg07.webp" }
+                ],
+                answer: "SDG 4"
+            },
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const questionElement = document.getElementById("question");
+            const optionsElement = document.getElementById("options");
+            const currentQuestion = questions[currentQuestionIndex];
+
+            questionElement.textContent = currentQuestion.question;
+            optionsElement.innerHTML = "";
+
+            currentQuestion.options.forEach(option => {
+                const optionDiv = document.createElement("div");
+                optionDiv.className = "option";
+                const optionImg = document.createElement("img");
+                optionImg.src = option.img;
+                optionImg.alt = option.text;
+                optionImg.className = "option-img";
+                optionImg.onclick = () => selectAnswer(option.text);
+                const optionText = document.createElement("p");
+                optionText.textContent = option.text;
+                optionDiv.appendChild(optionImg);
+                optionDiv.appendChild(optionText);
+                optionsElement.appendChild(optionDiv);
+            });
+        }
+
+        function selectAnswer(selectedOption) {
+            const currentQuestion = questions[currentQuestionIndex];
+            const resultElement = document.getElementById("result");
+            if (selectedOption === currentQuestion.answer) {
+                resultElement.textContent = "Correct!";
+                score++;
+            } else {
+                resultElement.textContent = "Incorrect. The correct answer is: " + currentQuestion.answer;
+            }
+        }
+
+        function checkAnswer() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+                document.getElementById("result").textContent = "";
+            } else {
+                document.getElementById("question").textContent = "Quiz completed!";
+                document.getElementById("options").innerHTML = "";
+                document.getElementById("result").textContent = "Congratulations!";
+                document.getElementById("score").textContent = "Your score: " + score + "/" + questions.length;
+                document.getElementById("restartBtn").style.display = "block";
+            }
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            loadQuestion();
+            document.getElementById("result").textContent = "";
+            document.getElementById("score").textContent = "";
+            document.getElementById("restartBtn").style.display = "none";
+        }
+
+        loadQuestion();
+    </script>
+
+    
+</body>
+</html>
